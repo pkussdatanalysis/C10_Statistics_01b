@@ -1,0 +1,328 @@
+- Class: meta
+  Course: Statistical_Inference
+  Lesson: Asymptotics
+  Author: Swirl Coders
+  Type: Standard
+  Organization: Johns Hopkins Bloomberg School of Public Health
+  Version: 2.2.0
+
+- Class: text
+  Output: 在本课中，我们将讨论渐近线，这是一个描述随着样本数量变得非常大而趋近无穷大统计量如何变化的问题。 假设样本数量和总体是无限的，
+    对于进行统计推断和近似是有用的，因为它通常会导致对过程很好的理解。
+
+- Class: text
+  Output: 渐近线通常不能保证有限样本的性能，但它们构成了概率频率解释（长期时间内事件发生的比例）的基础。
+
+- Class: mult_question
+  Output: 回想一下我们所学的一系列iid(独立同分布)观测的样本均值的分布。 样本平均值的估计是什么？
+  AnswerChoices: population mean; population variance; standard error; sigma^2/n
+  CorrectAnswer: population mean
+  AnswerTests: omnitest(correctVal='population mean')
+  Hint: 哪个选项中有“mean”这个词？
+
+- Class: text
+  Output: 大数定律（LLN）表示样本平均值接近它所估计的值。 我们在模拟中看到，样本越大估计越好。 当我们一遍又一遍地翻转一个均匀的硬币时，
+    它最终收敛到正面的真实概率（0.5）。
+
+- Class: text
+  Output: 大树定律是概率频率解释的基础
+
+- Class: cmd_question
+  Output: 为了看到这一点，我们创建了函数coinPlot。 它需要一个整数n，这是将被模拟的翻转硬币的次数。 当coinPlot执行这些硬币翻转时，它计算
+    累积总和（假定正面为1，反面为0），但是在每次掷后，它将累计和除以迄今为止执行的翻转次数。 现在试试n = 10. 
+  CorrectAnswer: coinPlot(10)
+  AnswerTests: omnitest(correctExpr='coinPlot(10)')
+  Hint: 在命令提示符处输入coinPlot（10）。
+
+- Class: cmd_question
+  Output: 你的输出取决于R的随机数发生器，在第10次翻转时，你的累积和/ 10可能与我的不同。 如果你这样做了几次，你的图形会有所不同。 
+    现在再次调用coinPlot，这次以10000为参数。
+  CorrectAnswer: coinPlot(10000)
+  AnswerTests: omnitest(correctExpr='coinPlot(10000)')
+  Hint: 在命令提示符下输入coinPlot（10000）。
+
+- Class: text
+  Output: 看到不同？ 该线接近0.5的渐近线。 这是你所期望的可能性，因为我们正在绘制的图表，即翻转的累计总和/翻转总次数，代表了硬币正面朝上的可能性。
+    我们知道，这是0.5。
+
+- Class: text
+  Output: 我们说如果一个估计量收敛于它想要估计的值，它就是一致的。 LLN表示，iid样本的样本均值与总体平均值一致。 这很好，对吧？
+
+- Class: mult_question
+  Output: 根据我们之前的经验，你认为样本方差是否具有一致性？
+  AnswerChoices: Yes; No
+  CorrectAnswer: Yes
+  AnswerTests: omnitest(correctVal='Yes')
+  Hint: 回想一下我们对样本方差的模拟，以及随着样本规模的增加，它们如何收敛到总体方差。 听起来像一致性，对吗？
+
+- Class: text
+  Output: 现在有一些非常重要的事情 - 中心极限定理（CLT） - 统计学中最重要的定理之一。 它指出，随着样本量的增加，iid变量的平均值
+    （均值要进行标准化）成为标准正态分布。 
+ 
+- Class: text
+  Output: 我们来分析一下这个是什么意思。 首先，“标准化”意味着你转换了样本均值X'。 您从中减去总体平均值mu，并将差值除以sigma / sqrt（n）。 
+    这里sigma是总体的标准偏差，n是样本大小。
+
+- Class: text
+  Output: 其次，CLT表示，对于大n，这个归一化变量（X'-mu）/（sigma / sqrt（n））几乎正态分布，均值为0，方差为1.请记住，对于CLT来说n必须大才能应用。
+
+- Class: mult_question
+  Output: 你认识到sigma / sqrt（n）吗？ 由于总体标准偏差sigma是未知的，sigma/ sqrt（n）通常近似于什么？
+  AnswerChoices: the standard error of the sample mean; the variance of the population; the mean of the population; I give up
+  CorrectAnswer: the standard error of the sample mean
+  AnswerTests: omnitest(correctVal='the standard error of the sample mean')
+  Hint: 只有the standard error of the sample mean与标准差有关
+
+- Class: text
+  Output: 我们来重述一下CLT。 假设X_1，X_2，... X_n是独立同分布的随机变量，来自无限总体，均值为mu，方差为σ^2(表示σ的平方)。 那么
+    如果n很大，那么X的平均值称为X'近似一个平均值μ和方差σ^2/ n的正态分布。 我们表示为X'~N（mu，sig ^ 2 / n）。
+
+- Class: figure
+  Output: 为了显示CLT，我们进行了一个模拟实验。 在样本大小分别是10，20，30的情况下抛掷骰子求平均值，均进行1000次，得到了3个分别为1000个平均值的直方图。 通过减去
+    平均值（3.5），然后除以标准误差sqrt（2.92 / n），将n个骰子（n = 10,20,30）的每个平均值归一化。 归一化使每个直方图看起来像标准正态分布，即平均值0和标准偏差1。
+  Figure: cltDice.R
+  FigureType: new
+
+- Class: text
+  Output: 请注意，我们并不知道原始总体分布类型。 这正是它的用处所在！ 只要我们的样本量足够大，样本是独立的，我们就可以假设样本均值的正态性。 
+    让我们看看一个二项式实验如翻转硬币的结果如何。
+    
+- Class: text
+  Output: 回想一下，如果一个正面（称为1）的概率是p，那么反面（0）的概率是1-p。 期望值是p，方差是p-p ^ 2或p（1-p）。 假设我们做硬币翻转，
+    让p'代表这n次翻转的平均值。 我们通过减去平均值p并除以标准偏差sqrt（p（1-p）/ n）来标准化p'。 让我们做1000次试验并绘制结果直方图。 
+
+- Class: figure
+  Output: 如图，显示了3个这样的试验的结果，每个试验的n值不同（10,20和30），硬币是均匀的，所以E（X）= 0.5，标准误差是1 /（2sqrt（n））。 请注意，
+    较大的n（30）直方图如何在均值0周围收紧。
+  Figure: cltFairCoin.R
+  FigureType: new
+
+- Class: figure
+  Output: 这是同一个实验的的另一个图形，但这次是使用不均匀的硬币。 我们把正面的概率设置为0.9，所以E（X）= 0.9，标准误差是sqrt（0.09 / n）。
+    同样，样本量越大，分布越接近正态分布，尽管不均匀硬币的正态化近似不如质地均匀的硬币。
+  Figure: cltUnfairCoin.R
+  FigureType: new
+
+- Class: text
+  Output: 现在我们来谈谈置信区间。
+
+- Class: figure
+  Output: 从CLT中我们知道，对于大的n，样本均值是正态的,平均值是μ和标准偏差σ/ sqrt（n）。 我们也知道，正态曲线下95％的面积在平均值的两个标准偏差之内。 
+    这个图是mu = 0和sigma = 1的标准正态分布图。 整个阴影部分描绘平均值的2个标准偏差内的区域，红色较深的部分部分显示1个标准偏差内的68％的面积。
+  Figure: stddev1.R
+  FigureType: new
+
+- Class: text
+  Output: 因此曲线下面的5％没有阴影。 根据曲线的对称性，只有2.5％的数据大于平均数+2倍的标准偏差（mu + 2 * sigma / sqrt（n）），
+    只有2.5％的数据小于平均值 - 2倍的标准偏差（mu-2*sigma/ sqrt（n））。
+
+- Class: text
+  Output: 所以样本平均值X'大于mu + 2sigma / sqrt（n）或小于mu-2sigma / sqrt（n）的概率为5％。 等同地，这些限制之间的概率是95％。 
+    当然，我们可以有不同的区间大小。 如果我们想要95以外的东西，那么我们将使用2以外的分位数。
+
+- Class: text
+  Output: 数值X'加或减2 sigma / sqrt（n）称为mu的95％置信区间。 95％表示的是，如果一个人重复获得n个样本，那么所获得区间的95％将包含mu，这个数量是我们试图估计的。
+
+- Class: mult_question
+  Output: 请注意，对于95％置信区间，我们将（100-95）除以2（因为我们有左右两个尾部），并将结果添加到95来计算我们需要的分位数。
+    97.5分位数实际上是1.96，但是为了简单起见，它通常只是取整为2.如果你想找到一个90％的置信区间，你想要什么分位数？
+  AnswerChoices: 90; 95; 85; 100
+  CorrectAnswer: 95
+  AnswerTests: omnitest(correctVal='95')
+  Hint: 将（100-90）除以2，并将此结果添加到90。
+
+- Class: cmd_question
+  Output: 使用R函数qnorm来查找标准正态分布的第95个分位数。 请记住，qnorm以概率作为输入。 你可以使用所有其他参数的默认值。
+  CorrectAnswer: qnorm(0.95)
+  AnswerTests: omnitest(correctExpr='qnorm(0.95)')
+  Hint: 在命令提示符下键入qnorm（0.95）。
+
+- Class: mult_question
+  Output: 正如我们之前所看到的，在一个二项式分布中，其中p表示成功的概率或比例，方差σ2(σ的平方)是p（1-p），所以样本均值p'的标准误差是sqrt（p 1-p）/ n）其中n是样本大小。 
+    p的95％置信区间为p'+/- 2 * sqrt（p（1-p）/ n）。 这个公式中的2代表什么？
+  AnswerChoices: "the mean of p';the variance of p';the standard error of p';the approximate 97.5% normal quantile"
+  CorrectAnswer: "the approximate 97.5% normal quantile"
+  AnswerTests: omnitest(correctVal='the approximate 97.5% normal quantile')
+  Hint: 回顾置信区间p'+/- qnorm * sigma / sqrt（n）的公式
+
+- Class: text
+  Output: 这里的一个关键点是我们不知道p的真实值; 这就是我们想要估计的。 如果我们不知道p（1-p），我们如何计算置信区间？ 我们可以保守一点，
+    尽量使其最大化，以便获得最大可能的置信区间。 微积分告诉我们当p = 1/2时p（1-p）是最大的。所以在公式p'+/- 2 * sqrt（p（1-p）/ n）中
+    另p=1/2时我们得到最大的95%的置信区间。
+
+- Class: mult_question
+  Output: 在上面的公式中使用1/2的p值可以得到p的95％置信区间的表达式。
+  AnswerChoices: p'+/- 1/sqrt(n); p'+/- 1/(2*sqrt(n)); p'+/- 2*sqrt(n)
+  CorrectAnswer: p'+/- 1/sqrt(n)
+  AnswerTests: omnitest(correctVal='p\'+/- 1/sqrt(n)')
+  Hint: 当p = 1/2，p（1-p）= 1/4和sqrt（1 / 4n）= 1 /（2 * sqrt（n））。 当你乘以2会发生什么？
+
+- Class: mult_question
+  Output: 假设你正在竞选办公室主任，你的民意调查人员调查了100人，其中60个声称他们将要投票给你。 你想估计投票给你的真正比例，你想对估计有95％的
+    信心。 我们需要找到95％置信度下支持者的真实比例的范围，所以我们用公式p'+/- 1 / sqrt（n）来回答这个问题。 首先，对于估计值p'你会取什么值？
+  AnswerChoices: .60; .56; 1.00; .10
+  CorrectAnswer: .60
+  AnswerTests: omnitest(correctVal='.60')
+  Hint: 这里唯一的抽样数字是说他们会投票给你的人数。 用样本大小除以它的比例。
+
+- Class: mult_question
+  Output: 你会用1 / sqrt（n）来做什么？
+  AnswerChoices: 1/sqrt(60); 1/sqrt(56); 1/100; 1/10
+  CorrectAnswer: 1/10
+  AnswerTests: omnitest(correctVal='1/10')
+  Hint: 样本大小为n，在这种情况下n = 100。 什么是1 / sqrt（100）？
+
+- Class: mult_question
+  Output: 那么这个置信区间的范围是什么？
+  AnswerChoices: .5 and .7; .46 and .66; .55 and .65; I haven't a clue
+  CorrectAnswer: .5 and .7
+  AnswerTests: omnitest(correctVal='.5 and .7')
+  Hint: 我们知道p'-1 / sqrt（n）是下界，p'+ 1 / sqrt（n）是上界，所以用前两个问题中的答案来填充这些变量的值。
+
+- Class: mult_question
+  Output: 你对这次选举感觉如何？
+  AnswerChoices: confident; unsure; I'll pull out;  Perseverance, that's the answer; 
+  CorrectAnswer: confident
+  AnswerTests: omnitest(correctVal='confident')
+  Hint: 有95％的信心，选民支持你。 你看起来像赢家！
+
+- Class: text
+  Output: 计算二项式分布置信区间的另一种方法是用p'代替p。 这被称为Wald置信区间。 我们还可以使用R函数qnorm来获得更精确的分位数值
+    （更接近1.96），而不是我们的近似估计值2。
+
+- Class: cmd_question
+  Output: 使用公式p'+/- qnorm（.975）* sqrt（p'（1-p'）/ 100），使用上面的p'和n值还有R结构p'+ c（-1,1 ）...来处理公式的正负部分。 
+    你应该看到类似于你刚才估计的范围。
+  CorrectAnswer: 0.6 + c(-1,1)*qnorm(0.975)*sqrt(0.6*0.4/100)
+  AnswerTests: any_of_exprs('0.6 + c(-1,1)*qnorm(0.975)*sqrt(0.6*.4/100)', '0.6 + c(-1,1)*qnorm(0.975)*sqrt(0.6*(1-0.6)/100)')
+  Hint: 在命令提示符下输入0.6 + c(-1,1)*qnorm(0.975)*sqrt(0.6*0.4/100)
+
+- Class: cmd_question
+  Output: 作为这个Wald置信区间的替代，我们也可以使用参数60和100的R函数binom.test，并让所有其他的参数都默认。 这个函数"对伯努利实验中成功概率
+    的简单零假设进行精确测试"。 （这意味着它保证了coverage（收敛），使用了大量的计算，并且不依赖于CLT。）这个函数返回了很多信息，
+    但是现在我们想要的只是它返回的置信区间的值。 使用R结构x$conf.int现在可以找到它们。
+  CorrectAnswer: binom.test(60,100)$conf.int
+  AnswerTests: omnitest(correctExpr='binom.test(60,100)$conf.int')
+  Hint: 在命令提示符下输入binom.test(60,100)$conf.int。 
+
+- Class: text
+  Output: 接近我们之前看到的，对吧？ 现在我们将看到，当n很小的时候，Wald区间并不是很准确。 
+
+- Class: figure
+  Output: 假设我们翻转了一个硬币很少的次数，比如20。同样假设我们有一个函数mywald，它使用概率p，并且用这个概率p产生30次20个硬币翻转。 
+     对于这20个硬币翻转，它使用取样的成功比例p'来计算95％Wald区间的上界和下界，即它计算两个数p'+/- qnorm（0.975）* sqrt （p'*（1-p'）/ n）。 
+     对于给定的真实概率p，我们计算30次试验中真正的概率p在Wald置信区间内的次数。 我们将这称为覆盖。
+  Figure: WaldDemo.R
+  FigureType: new
+
+- Class: cmd_question
+  Output: 为了确保你明白发生了什么事，现在尝试以概率0.2运行mywald。 它会打印出30个p值（你不需要看），接下来是30个下界，30个上界，
+    最后是输入0.2在两个界限之间的次数百分比。 看看你是否同意你得到的百分比。 通常只需要统计次数（小于30）即可，即小于上限。
+  CorrectAnswer: mywald(0.2)
+  AnswerTests: omnitest(correctExpr='mywald(0.2)')
+  Hint: 在命令提示符下输入mywald（0.2）。 
+
+- Class: text
+  Output: 现在你明白了这个基本原理，假设我们用了1000次试验，而不是30次试验。 另外假设我们做了一系列概率的试验，比如从.1到.9采取步长0.05。
+    更具体地说，我们将使用17个不同的概率来调用我们的函数，即.1，.15，.2，.25，... .9。 然后，我们可以绘制每个概率的覆盖率百分比。
+
+- Class: figure
+  Output: 这是我们的结果的图形。 17个顶点中的每一个都显示了传递给函数的特定真实概率p的覆盖百分比。 结果会有所不同，但通常接近或高于95％线的
+    唯一概率是p = 0.5。 所以这表明，当n的翻转数量很小时（20）Wald置信区间效果不太好。
+  Figure: WaldFail.R
+  FigureType: new
+
+- Class: figure
+  Output: 让我们尝试相同的实验，并在1000次试验中增加硬币翻转次数n，从20次到100次，看看是否改善。 再次，结果可能会有所不同，但所有的概率
+    更接近95％的线，更大的n值，CLT效果会更好。
+  Figure: WaldPass.R
+  FigureType: new
+
+- Class: text
+  Output: 解决小n的问题是使用Agresti / Coull间隔。 这就是说，在计算比例p'时，我们增加了2次成功和2次失败。 具体而言，如果X是20次硬币翻转中的成功次数，
+    则不设置p'= X / 20，而是令p'=（X + 2）/ 24。 我们使用24作为试验的次数，因为我们已经增加了2次成功和2次失败的计数。 请注意，我们仍然使用20来计算上下限。
+
+- Class: figure
+  Output: 这是一个使用这个Agresti / Coull间隔的图形，每次有20个硬币翻转，进行1000次。 它看起来比原来的有20个硬币翻转Wald置信区间和
+    改进的有100个硬币翻转Wald置信区间好多了。 但是，这种技术可能会使置信区间太宽。
+  Figure: ACDemo.R
+  FigureType: new
+
+- Class: text
+  Output: 为什么会这样？ 增加2次成功和2次失败使p'更接近0.5，正如我们所看到的那样，是最大化置信区间的值。
+
+- Class: figure
+  Output:  为了简单说明，我们编写了一个函数ACCompar，它带有一个整数输入n。 对于从1到n的每个k，它计算两个分数，k / n和（k + 2）/（n + 4）。
+    然后打印出新的（k + 2）/（n + 4）分数是否小于旧的k / n的布尔向量。 它还打印出条件为TRUE的k的总数。 
+  Figure: ACComp.R
+  FigureType: new
+
+- Class: text
+  Output: 对于小于n / 2的所有k，您看到FALSE指示新的分数大于或等于k / n。 对于大于n / 2的所有k，您会看到TRUE，表示新的分数小于旧的分数。 如果k = n / 2，则新旧分数相等。
+
+- Class: cmd_question
+  Output: 现在尝试运行ACCompar，输入为20。
+  CorrectAnswer: ACCompar(20)
+  AnswerTests: omnitest(correctExpr='ACCompar(20)')
+  Hint: 在命令提示符下输入ACCompar（20）。
+
+- Class: text
+  Output: 让我们继续讨论泊松分布和置信区间。 回想一下，泊松分布适用于计数或费率。 对于后者，我们写X~Poisson(lambda*t)，
+    其中lambda是每单位时间的预期计数，t是总监视时间。
+
+- Class: text
+  Output: 假设核泵在94.32天内失败了5次，我们希望计算每天的失败率95％的置信区间。 故障数X是带参数（λ* t）的泊松分布。 我们不知道失败率，
+    但是我们估计它是x / t。 我们的估计值为lambda_hat，所以lambda_hat = x / t。 根据理论，我们估计的失败率的方差是lambda / t。 
+    我们不知道lambda，所以我们使用我们的估计值。 因此，我们将lambda_hat的方差近似为lambda_hat / t。
+
+- Class: mult_question
+  Output: 在这个例子中，你会用什么来估计平均值x/ t?
+  AnswerChoices: 5/94.32; 94.32/5; I haven't a clue
+  CorrectAnswer: 5/94.32
+  AnswerTests: omnitest(correctVal='5/94.32')
+  Hint: 失败的次数除以观察的时间。
+
+- Class: cmd_question
+  Output: 现在用这个值设置一个变量lamb。
+  CorrectAnswer: lamb <- 5/94.32
+  AnswerTests: expr_creates_var('lamb'); omnitest(correctExpr='lamb <- 5/94.32')
+  Hint: 在R提示符下输入lamb <- 5 / 94.32。
+
+- Class: cmd_question
+  Output: 所以lamb是我们估计的平均值，lamb/ t是我们估计的方差。 我们用来计算95％置信区间的公式是est mean + c（-1,1）* qnorm（.975）* sqrt（est var）。 现在使用此公式进行适当的替换。 
+  CorrectAnswer: lamb +c(-1,1)*qnorm(.975)*sqrt(lamb/94.32)
+  AnswerTests: omnitest(correctExpr='lamb +c(-1,1)*qnorm(.975)*sqrt(lamb/94.32)')
+  Hint: 在R提示符下输入lamb + c（-1,1）* qnorm（.975）* sqrt（lamb / 94.32）。
+
+- Class: cmd_question
+  Output: 作为一个检查，我们可以使用R的函数poisson.test和参数5和94.32来检查这个结果。 这是一个确切的测试，所以它保证覆盖。
+    与二项式精确测试一样，我们只需要使用x$conf构造来查看结果的conf部分。 现在就做这个。 
+  CorrectAnswer: poisson.test(5,94.32)$conf
+  AnswerTests: omnitest(correctExpr='poisson.test(5,94.32)$conf')
+  Hint: 在命令提示符下输入'poisson.test（5,94.32）$ conf'。
+
+- Class: text
+  Output: 很近，对吧？ 现在要检查我们估计的覆盖范围，我们将使用之前二项式分布使用的相同模拟实验。 我们将把lambda的值从0.005改为.1，
+    步长为.01（所以我们有10个），每一个我们将生成1000个平均lambda * t的泊松样本。 我们将计算样本均值，并使用它们来计算95％置信区间。 
+    然后，我们将计算在1000次模拟中真实平均值（我们的lambda）包含在计算间隔中的频率。
+ 
+- Class: figure
+  Output: 这是一个结果的图形。 我们看到，随着lambda变大，覆盖范围也随之改善，而对于小的lambda值，这种情况已经完全消失。
+  Figure: PoisDemo.R
+  FigureType: new
+
+- Class: figure
+  Output: 现在，当我们增加时间单位时，看到覆盖率如何提高是很有趣的。 在前面的图中，我们使用了t = 100（四舍五入94.32）。 
+    下面是一个相同的实验设置t = 1000的图形。 我们看到，除了最小的那个之外，几乎所有lambda的值都覆盖得更好。
+  Figure: PoisDemoImpr.R
+  FigureType: new
+  
+- Class: mult_question
+  Output: 确定将这次练习的结果提交吗?
+  CorrectAnswer: NULL
+  AnswerChoices: Yes;No
+  AnswerTests: post_on_demand()
+  Hint: ""
+  
+- Class: text
+  Output: 恭喜！ 你已经完成了渐进式的这一课。 我们希望你在经过之后有信心。

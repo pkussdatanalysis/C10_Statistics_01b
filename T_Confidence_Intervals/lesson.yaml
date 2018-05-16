@@ -1,0 +1,391 @@
+- Class: meta
+  Course: Statistical_Inference
+  Lesson: T_Confidence_Intervals
+  Author: mzl
+  Type: Standard
+  Organization: pkuss
+  Version: 2.4.3
+
+- Class: text
+  Output: 在本课中，我们将讨论一些处理小数据集的统计方法，特别是Student或Gosset的t分布和t置信区间。
+
+- Class: mult_question
+  Output: 在“渐近线”课程中，我们使用中心极限定理（CLT）和正态分布讨论了置信区间。 这些都需要大样本量，
+    计算置信区间的公式是Est +/- qnorm * std error（Est），其中Est是一些具有标准误差的估计值（如样本均值）。 这里qnorm代表什么？
+  AnswerChoices: the population mean; the population variance; the standard error; a specified quantile from a normal distribution 
+  CorrectAnswer: a specified quantile from a normal distribution
+  AnswerTests: omnitest(correctVal='a specified quantile from a normal distribution')
+  Hint: 哪个选项中包含“qnorm”这个词的一部分？
+
+- Class: mult_question
+  Output: 在渐近的课程中，我们还提到了遵循标准正态分布的Z统计量Z =（X'-mu）/（sigma / sqrt（n））。 这个归一化的统计量Z特别好，
+    因为我们知道它的均值和方差。 他们分别是什么？
+  AnswerChoices: 0 and 1; 1 and 0; 0 and 0; 1 and 1
+  CorrectAnswer:  0 and 1
+  AnswerTests: omnitest(correctVal='0 and 1')
+  Hint: 回想一下标准正态的定义。 它以0为中心，标准差为1，因此它的均值和方差是什么？
+
+- Class: text
+  Output: 所以标准化正态分布的均值和方差是固定的和已知的。 现在我们定义一个类似于Z的t统计量。它定义为t =（X'-mu）/（s / sqrt（n））。 
+    就像Z统计量一样，t的中心在0左右。两者的唯一区别在于Z中的总体标准偏差sigma被替换为t中的标准样本偏差。 
+    所以t统计量的分布与总体均值和方差无关。 取决于样本大小n。
+
+- Class: text
+  Output: 因此，对于t分布，计算置信区间的公式与我们在上一课中所做的相似。 然而，我们使用t分布分位数，而不是正态分布的分位数。 
+    所以公式是Est +/- t-quantile * std error（Est）。 我们之前提到的另一个区别是，当我们估计Est的标准误差时，我们将使用样本标准差。
+
+- Class: mult_question
+  Output: 在t统计量的公式中，t =（X'-mu）/（s / sqrt（n））是什么表达式代表样本标准差？
+  AnswerChoices: X'; mu; s; n
+  CorrectAnswer: s
+  AnswerTests: omnitest(correctVal='s')
+  Hint: X'和mu表示平均值，n通常表示样本大小的整数。
+
+- Class: text
+  Output: 这些置信区间是非常方便的，如果你有t分布和正态分布之间的选择，选择t分布。 我们将看到，随着数据集变大，t区间看起来像正态分布。 
+    我们将介绍取决于您拥有的数据的一组和两组版本。
+
+- Class: text
+  Output: William Gosset在1908年发明的t分布比正态情况下的尾巴更粗。 而且，正态分布有两个参数，mean和variance，
+    t分布只有一个 - 自由度数（df）。. 
+
+- Class: text
+  Output: 随着df(自由度)的增加，t分布变得更像一个标准的正态分布，所以它的中心在0附近。另外，t假设基础数据是iid高斯的，
+    所以统计量（X'-mu）/（s / sqrt（n）） 有n-1个自由度。 
+
+- Class: mult_question
+  Output: 在公式t =（X'-mu）/（s / sqrt（n））中，如果用sigma代替s，那么统计量t就是接近什么呢？
+  AnswerChoices: the standard normal; the standard abnormal; the population variance; Huh?
+  CorrectAnswer: the standard normal
+  AnswerTests: omnitest(correctVal='the standard normal')
+  Hint: 更换公式应该看起来很熟悉，是一个标准化的正态分布
+
+- Class: figure
+  Output: 为了明白我们的意思，提供了函数myplot，以整数df为输入，并绘制了df自由度的t分布。 它也绘制一个标准的正态分布，
+    所以你可以看到它们是如何相互关联的。
+  Figure: tPlot.R
+  FigureType: new
+
+- Class: cmd_question
+  Output: 现在用参数2来尝试myplot。
+  CorrectAnswer: myplot(2)
+  AnswerTests: omnitest(correctExpr='myplot(2)')
+  Hint: 在命令提示符下输入myplot（2）。
+
+- Class: cmd_question
+  Output: 你可以看到t分布的驼峰（蓝色）没有正态分布的高。 因此，t分布的两个尾部吸收了额外的数据，所以它们比正态分布厚。 
+    请注意，有2个自由度，只有3个数据点。 谈论小样本大小。 现在尝试输入20的myplot。
+  CorrectAnswer: myplot(20)
+  AnswerTests: omnitest(correctExpr='myplot(20)')
+  Hint: 在命令提示符处输入myplot（20）。
+
+- Class: text
+  Output: 使用这个更高的自由度,这两个分布几乎是一样的。
+
+- Class: figure
+  Output: 看这些分布的另一种方法是绘制他们的分位数。 我们已经为您提供了第二个函数myplot2，它执行此操作。 它绘制了代表正态分布的分位数的
+    浅蓝色参考线和t分位数的黑色线。 两条线均是从第50个百分点分位数0开始的（因为分布是对称的，大约为0），并且到第99个位置。
+  Figure: tQuant.R
+  FigureType: new
+
+- Class: cmd_question
+  Output: 现在尝试使用参数2运行myplot2。
+  CorrectAnswer: myplot2(2)
+  AnswerTests: omnitest(correctExpr='myplot2(2)')
+  Hint: 在命令提示符下输入myplot2（2）。
+
+- Class: text
+  Output: 两条粗线之间的距离表示分位数之间的差异，因此有两组不同的分位数区间。 注意细的水平线和垂直线。 这些分别代表t和正态分布的0.975分位数。 
+
+- Class: cmd_question
+  Output: 使用R函数qt检查水平线代表的值，分位数为0.975，自由度（df）为2。
+  CorrectAnswer: qt(0.975,2)
+  AnswerTests: omnitest(correctExpr='qt(0.975,2)')
+  Hint: 在命令提示符下键入qt（0.975,2）。
+
+- Class: cmd_question
+  Output: 它匹配图中的水平线。 现在用参数20运行myplot2。
+  CorrectAnswer: myplot2(20)
+  AnswerTests: omnitest(correctExpr='myplot2(20)')
+  Hint: 在命令提示符下输入myplot2（20）。
+
+- Class: text
+  Output: 分位数与更高的自由度密切相关。 然而，在97.5的百分位数中，t分位数仍然大于正态分布对应的值。 Student规则！
+
+- Class: text
+  Output: 这意味着t分布的范围总是比正态分布的区间范围要宽。 这是因为估算标准偏差会带来更多的不确定性，所以会产生更大的区间。
+
+- Class: text
+  Output: 所以t-interval被定义为X'+/- t_（n-1）* s / sqrt（n），其中t_（n-1）是相关的分位数。 t置信区间假定数据是正常的，尽管这个假设
+    是iid（独立同分布），并且只要数据的分布是大致对称的和丘状的，就能很好地工作。
+
+- Class: mult_question
+  Output: 我们的图形向我们表明，对于很大的自由度，t分布分位数变得接近于什么？
+  AnswerChoices: standard normal quantiles; standard abnormal quantiles; very large numbers; very small numbers
+  CorrectAnswer: standard normal quantiles
+  AnswerTests: omnitest(correctVal='standard normal quantiles')
+  Hint: 回想一下，自由度越大，t分布越接近正态分布。 较小的自由度使其看起来不太像。
+
+- Class: text
+  Output: 虽然相当好，但t区间并不总是适用。 对于偏态分布，t分布假设（以0为中心）不满足。 有办法解决这个问题（如采取对数）。
+     
+- Class: text
+  Output: 对于高度离散的数据，比如二进制数据，除t之外的时间间隔是可用的. 
+
+- Class: text
+  Output: 然而，配对的观测值往往是通过对观测值进行差异来分析的。 接下来向你解释这个意思。
+
+- Class: text
+  Output: 我们希望你不会感到疲倦，因为我们要看一些睡眠数据。 这是最初在Gosset的Biometrika论文中分析的数据，显示10名患者在两种催眠药物上
+    的睡眠时间的增加。
+
+- Class: cmd_question
+  Output: 我们已经为你加载了数据。 R将其视为两组而非配对数据。 命令行输入sleep 这会告诉你数据是如何存储的。
+  CorrectAnswer: sleep
+  AnswerTests: omnitest(correctExpr='sleep')
+  Hint: 在命令提示符下输入sleep。
+
+- Class: text
+  Output: 我们看到20项数据，前10个展示了第一个药物（组1）在每个病人（ID）上的结果（extra列显示的数据），最后10个参数是第二个药物（组2）
+    对每个病人的效果（extra列显示的数据）。 
+
+- Class: figure
+  Output: 在这里，我们以成对的方式绘制数据，将每个患者的两个结果与一条线连接，组1的结果在左边，组2的结果在右边。 看陡峭的紫色线， 
+    这是ID 9，组1的结果为0，组2的结果为4.6。
+  Figure: sleepPlot.R
+  FigureType: new
+
+- Class: text
+  Output: 如果我们只看20个数据点，我们会比较组1的方差与组2的方差。 这两个组都有相当大的范围。 但是，当我们查看每个病人配对的数据时，
+    我们发现结果的变化通常要小得多，并取决于特定的主题。 
+
+- Class: cmd_question
+  Output: 为了说明，我们已经为您定义了一些变量，即g1和g2，两个长10的向量，分别持有这两种药物中每一种的10名患者的结果。 
+    使用R函数range来查看g1的范围。
+  CorrectAnswer: range(g1)
+  AnswerTests: omnitest(correctExpr='range(g1)')
+  Hint: 在命令提示符处输入range(g1)。
+
+- Class: cmd_question
+  Output: g1值从-1.6到3.7。 现在看看g2的范围。 我们看到这两个组的范围都比较大。
+  CorrectAnswer: range(g2)
+  AnswerTests: omnitest(correctExpr='range(g2)')
+  Hint: 在命令提示符处输入range(g2)。
+
+- Class: cmd_question
+  Output:  现在让我们来看看成对的差异。 我们可以通过从g2中减去g1来创建差分向量。 现在做这个，把结果放在变量difference 中。
+  CorrectAnswer: difference <- g2-g1
+  AnswerTests: expr_creates_var("difference"); omnitest(correctExpr='difference <- g2-g1')
+  Hint: 在命令提示符下：difference <- g2-g1。
+
+- Class: cmd_question
+  Output: 现在使用R函数的mean来找到difference的平均值。
+  CorrectAnswer: mean(difference)
+  AnswerTests: omnitest(correctExpr='mean(difference)')
+  Hint: 在命令提示符下输入mean(difference)。
+
+- Class: text
+  Output: 看看这个配对数据的平均差异与组方差相比有多小？
+
+- Class: cmd_question
+  Output:  现在使用R函数sd来找出difference的标准偏差并将结果存入变量s中。
+  CorrectAnswer: s <- sd(difference)
+  AnswerTests: expr_creates_var("s"); omnitest(correctExpr='s <- sd(difference)')
+  Hint: 在命令提示符下输入s <- sd（difference）。
+
+- Class: cmd_question
+  Output: 现在回想一下找出t置信区间的公式：X'+/- t_（n-1）* s / sqrt（n）。 进行适当的替换以找出刚刚计算的平均差的95％置信区间。 
+    我们已经在变量mn中存储了这个平均差值供您在这里使用。 记住对于公式的+/-部分使用R构造c（-1,1），对于分位数部分使用0.975和n-1自由度的
+    R函数qt。 我们的数据大小是10。
+  CorrectAnswer: mn + c(-1,1)*qt(0.975,9)*s/sqrt(10)
+  AnswerTests:  omnitest(correctExpr='mn + c(-1,1)*qt(.975,9)*s/sqrt(10)')
+  Hint: 在命令提示符处输入mn + c（-1,1）* qt（0.975,9）* s / sqrt（10）。
+
+- Class: text
+  Output: 这就是说，以0.95的可能性，个体患者的平均疗效差异（两种药物之间）为0.7到2.46小时的睡眠时间。
+
+- Class: cmd_question
+  Output: 我们也可以使用带有参数difference的R函数t.test来得到这个结果。 （您可以使用所有其他参数的默认值。）与其他R测试函数一样，
+    这将返回大量信息。 由于目前我们感兴趣的是置信区间，所以我们可以使用构造函数x$conf.int来选择它。 现在试试这个。
+  CorrectAnswer: t.test(difference)$conf.int
+  AnswerTests:  omnitest(correctExpr='t.test(difference)$conf.int')
+  Hint: 输入t.test(difference)$conf.int
+
+- Class: text
+  Output: 我们现在提出使用t置信区间来比较独立组的方法。 
+
+- Class: text
+  Output: 假设我们想在一个随机试验中比较两组间的平均血压。 我们将比较那些接受治疗的人和接受安慰剂的人。 与睡眠研究不同，
+    我们不能使用配对t检验，因为这些组是独立的，可能有不同的样本量。
+
+- Class: text
+  Output: 所以我们的目标是找出两个人口均值差异的95％置信区间。 我们把这个差别表示为mu_y - mu_x。 我们如何做到这一点？ 
+    回想一下我们的公式X'+/- t_（n-1）* s / sqrt（n）。
+
+- Class: text
+  Output: 首先，我们需要一个样本均值，但是我们有两个X'和Y'，每个组都有一个。 因为我们正在寻找一个包含mu_y-mu_x差异的置信区间，
+    所以我们不得不考虑它们的区别（Y'-X'）。 现在我们需要指定一个分位数。 假设这些组有不同的大小n_x和n_y。
+
+- Class: mult_question
+  Output: 对于一个组，我们使用了分位数t（0.975，n-1）。 你认为我们将用什么来分析这个问题？
+  AnswerChoices: t_(.975,n_x-1); t_(.975,n_y-n_x-2); t_(.975,n_x+n_y-1); t_(.975,n_x+n_y-2)
+  CorrectAnswer: t_(.975,n_x+n_y-2)
+  AnswerTests: omnitest(correctVal='t_(.975,n_x+n_y-2)')
+  Hint: 我们从每个组中失去一个自由度，因为我们已经计算了每个组的样本均值，所以我们添加两个，所以减去又两个。
+
+- Class: text
+  Output: 剩下的唯一一项是单个组的标准错误是s / sqrt（n）。 我们首先处理分子。 我们的区间估计将假设在两个组之间的共同方差s ^ 2。 
+    实际上，我们将使用加权总和来汇集来自两个组的方差信息。 （以后我们会处理更复杂的情况。）
+
+- Class: text
+  Output: 我们称之为方差估计量，我们使用汇总的方差。 它的公式需要两个方差估计量（使用标准偏差的形式来构造），S_x和S_y，每组一个。 
+    我们乘以各自的自由度，然后除以总自由度数。 这权衡了各自的差异; 那些来自更大样本的人得到更多的权重。
+
+- Class: mult_question
+  Output: 下列哪一项表示方差表达式的分子？
+  AnswerChoices: (n_x-1)(S_x)^2+(n_y-1)(S_y)^2; (n_x)(S_x)^2+(n_y)(S_y)^2; (n_x)(S_x)+(n_y)(S_y) 
+  CorrectAnswer: (n_x-1)(S_x)^2+(n_y-1)(S_y)^2
+  AnswerTests: omnitest(correctVal='(n_x-1)(S_x)^2+(n_y-1)(S_y)^2')
+  Hint: 我们需要方差，所以没有S平方的选择是不正确的。 回想一下，自由度比每个组的样本量少一个，这样就消除了另一个选择，只剩下一个选择。
+
+
+- Class: mult_question
+  Output: 以下哪项代表自由度的总数？
+  AnswerChoices: (n_x-1)+(n_y-1); (n_x+n_y); (n_x+n_y-1); (n_x+n_y+2)
+  CorrectAnswer: (n_x-1)+(n_y-1)
+  AnswerTests: omnitest(correctVal='(n_x-1)+(n_y-1)')
+  Hint: 回想一下，自由度比每个组的样本量少一个。 
+
+- Class: text
+  Output: 现在回想一下，我们正在计算单组情况下的标准误差项为s / sqrt（n）。 通过汇总样本差异，我们得到了分子。 
+    我们如何处理1 / sqrt（n）部分？ 我们可以简单地加1 / n_x和1 / n_y，并取总和的平方根。 然后我们乘以样本方差来完成标准误差的估计。
+
+- Class: text
+  Output: 我们想比较两个独立组的血压。 
+
+- Class: cmd_question
+  Output: 第一个是一组8个口服避孕药的使用者，第二个是21个人的控制组。 两个均值是X'_ {oc} = 132.86和X'_ {c} = 127.44，
+    两个样本标准差是s_ {oc} = 15.34和s_ {c} = 18.23。 我们首先计算合并样本方差的分子，方法是将两者的总和加权为它们各自的样本大小。 
+    回想一下公式（n_x-1）（S_x）^ 2 +（n_y-1）（S_y）^ 2并填入这个值来创建一个变量sp。
+  CorrectAnswer: sp <- 7*15.34^2 + 20*18.23^2
+  AnswerTests:  expr_creates_var('sp'); omnitest(correctExpr='sp <- 7*15.34^2 + 20*18.23^2',correctVal=8293.8672)
+  Hint: 在命令提示符下输入sp <- 7 * 15.34 ^ 2 + 20 * 18.23 ^ 2。 这里7和20分别小于给定的样本量，15.34和18.23分别是标准偏差。 
+    我们平方这些将它们转换成方差。
+
+- Class: cmd_question
+  Output: 现在有多少自由度？ 把你的答案放在变量ns中。
+  CorrectAnswer: ns <- 8+21-2
+  AnswerTests:  expr_creates_var('ns'); omnitest(correctExpr='ns <- 8+21-2',correctVal=27)
+  Hint: 相加两个样本大小并减去2.将结果存储在ns中。
+
+- Class: cmd_question
+  Output: 现在用sp除以ns，取平方根并把结果放回sp。
+  CorrectAnswer: sp <- sqrt(sp/ns)
+  AnswerTests:  expr_creates_var('sp'); omnitest(correctExpr='sp <- sqrt(sp/ns)')
+  Hint: 在命令提示符下键入sp <- sqrt（sp / ns）。
+
+- Class: cmd_question
+  Output: 现在找到95％的置信区间。 回想一下我们的基本公式X'+/- t_（n-1）* s / sqrt（n）和我们需要做的两个独立样本。 
+    当找到t分位数时，插入我们的变量ns的自由度，然后我们将插入X'的样本均值。 对于标准误差，我们将sp乘以总和1 / n_ {oc} + 1 / n_ {c}的平方根。
+    这个问题的值是X'_ {oc} = 132.86和X'_ {c} = 127.44，n_ {oc} = 8和n_ {c} = 21。 确保使用R构造c（-1,1）作为+/-部分，R函数qt使用正确的百分位数和自由度。
+  CorrectAnswer: 132.86-127.44+c(-1,1)*qt(.975,ns)*sp*sqrt(1/8+1/21)
+  AnswerTests:  omnitest(correctExpr='132.86-127.44+c(-1,1)*qt(.975,ns)*sp*sqrt(1/8+1/21)')
+  Hint: 在命令提示符下:132.86-127.44 + c（-1,1）* qt（.975，ns）* sp * sqrt（1/8 + 1/21）。
+
+- Class: text
+  Output: 请注意，这个95％的时间间隔中包含0。 这意味着你不能排除这两个组的平均值是相等的，因为0的差值在这个区间内。
+
+- Class: text
+  Output: 让我们重新回顾睡眠问题，而不是把数据看作10个主题的配对，我们将它看作两个独立的每个大小为10的集合。
+    回想一下数据存储在两个向量g1和g2中; 我们也在变量md中存储了它们之间的差异。
+
+- Class: cmd_question
+  Output: 让我们计算样本汇总标准差并将其存储在变量sp中。 回想一下，这是sqrt（加权样本方差和/自由度的加权和）。 每个权重是样本大小-1。 
+    使用R函数var来计算g1和g2的方差。 自由度是10 + 10-2 = 18。
+  CorrectAnswer: sp <- sqrt((9*var(g1)+9*var(g2))/18)
+  AnswerTests:  expr_creates_var('sp'); omnitest(correctExpr='sp <- sqrt((9*var(g1)+9*var(g2))/18)')
+  Hint: 在命令提示符处输入sp < - sqrt（（9 * var（g1）+ 9 * var（g2））/ 18）。
+
+- Class: cmd_question
+  Output: 现在公式的最后一项是均值差的标准误差，简单地说是乘以1/10 + 1/10的平方根的sp倍。 找出两组g1和g2的均值差的95％置信区间。 
+    将md和sp替换成上面使用的公式。
+  CorrectAnswer: md + c(-1,1)*qt(0.975,18)*sp*sqrt(1/5)
+  AnswerTests:  ANY_of_exprs('md + c(-1,1)*qt(0.975,18)*sp*sqrt(1/5)','md + c(-1,1)*qt(0.975,18)*sp*sqrt(1/10 + 1/10)')
+  Hint: 在命令提示符处键入md + c（-1,1）* qt（0.975,18）* sp * sqrt（1/5）。
+
+- Class: cmd_question
+  Output: 我们可以根据R函数t.test来检查这个手工计算。 既然我们从g2中减去g1，一定要把g2作为第一个参数，把g1作为第二个参数。 
+    还要确保配对的参数是FALSE，var.equal是TRUE。 我们只需要置信区间，所以使用构造x $ conf。 现在就做这个。
+  CorrectAnswer: t.test(g2,g1,paired=FALSE,var.equal=TRUE)$conf
+  AnswerTests:  omnitest(correctExpr='t.test(g2,g1,paired=FALSE,var.equal=TRUE)$conf')
+  Hint: 在命令提示符下键入t.test（g2，g1，paired = FALSE，var.equal = TRUE）$ conf。
+
+- Class: cmd_question
+  Output: 匹配，对不对？ 注意0又是在这个95％的区间内，所以你不能拒绝这两个组相同的说法。 回想一下，这与我们在配对数据中看到的情况相反。
+    我们再次运行t.test，这次使用paired = TRUE，看看结果有多不同。 不要指定var.equal，只能看置信区间。
+  CorrectAnswer: t.test(g2,g1,paired=TRUE)$conf
+  AnswerTests:  omnitest(correctExpr='t.test(g2,g1,paired=TRUE)$conf')
+  Hint: 在命令提示符下输入t.test（g2，g1，paired = TRUE）$ conf。
+
+- Class: text
+  Output: 置信区间不包括0，这意味着配对组的平均值有很大的不同。  
+
+- Class: text
+  Output: 现在让我们来谈谈计算两个不同方差组的置信区间。 我们不会像以前那样集中他们。
+
+- Class: text
+  Output: 在这种情况下，间隔的公式与我们之前看到的相似，Y'-X'+/- t_df * SE，其中与之前的Y'-X'代表样本均值的差异。 但是，标准误差SE和分位数t_df与以前的方法不同。 这里SE是两个平均值的平方标准误差之和的平方根，（s_1）^ 2 / n_1 +（s_2）^ 2 / n_2。
+
+- Class: text
+  Output: 当基础X和Y数据正常且方差不同时，我们从本课开始的标准化统计量（X'-mu）/（s / sqrt（n））不符合t分布。 但是，如果我们适当地设定自由度，它可以近似为t分布。 
+
+- Class: text
+  Output: 自由度的公式是一个没有人记得的复杂的部分。 分子是两个样本均值的平方标准误差之和的平方。 每个都有s ^ 2 / n的形式。 分母是两个项的总和，每组一个。 每个术语具有相同的形式。 平均值的标准误差除以样本大小-1除以四次方。 更确切地说，每个术语看起来像（s ^ 4 / n ^ 2）/（n-1）。 我们用这个df来找到t分位数。
+
+- Class: figure
+  Output: 看图， 可能需要拉伸绘图窗口才能更清晰地显示。
+  Figure: plotdiffVar.R
+  FigureType: new
+
+- Class: text
+  Output: 我们插入血压研究中的数字，看看它是如何工作的。 回想一下，我们有两组，第一组的大小为8，X'_ {oc} = 132.86，s_ {oc} = 15.34，第二组的大小为21，X'_ {c} = 127.44，s_ {c} = 18.23。
+
+- Class: cmd_question
+  Output: 我们先计算自由度。 从分子开始。 这是两项总和的平方。 每个学期的形式是s ^ 2 / n。 现在做这个，把结果放在num中。 我们的数字是15.34，8号和18.23号，21号。 
+  CorrectAnswer: num <- (15.34^2/8 + 18.23^2/21)^2
+  AnswerTests:  expr_creates_var('num'); omnitest(correctExpr='num <- (15.34^2/8 + 18.23^2/21)^2',correctVal=2046.6418737445)
+  Hint: 在命令提示符处键入num < - （15.34 ^ 2/8 + 18.23 ^ 2/21）^ 2。
+
+- Class: cmd_question
+  Output: 现在是分母。 这是两个术语的总和。 每个术语都有s ^ 4 / n ^ 2 /（n-1）的形式。把结果放在变量den中。 
+    我们的数字是15.34，8号和18.23号，21号。
+  CorrectAnswer: den <- 15.34^4/8^2/7 + 18.23^4/21^2/20
+  AnswerTests:  expr_creates_var('den'); omnitest(correctExpr='den <- 15.34^4/8^2/7 + 18.23^4/21^2/20',correctVal=136.123536407433)
+  Hint: 在命令提示符处键入den < - 15.34 ^ 4/8 ^ 2/7 + 18.23 ^ 4/21 ^ 2/20。
+
+- Class: cmd_question
+  Output: 现在用num除以den，并把结果放在mydf中。
+  CorrectAnswer: mydf <- num/den
+  AnswerTests:  expr_creates_var('mydf'); omnitest(correctExpr='mydf <- num/den')
+  Hint: 在命令提示符处输入mydf <- num / den。
+
+- Class: cmd_question
+  Output: 现在用R函数qt（.975，mydf）计算95％的时间间隔。 回想一下这个公式。 X'_ {oc} -X'_ {c} +/- t_df * SE。 
+    回想一下，SE是两个平均值的标准误差平方之和的平方根，（s_1）^ 2 / n_1 +（s_2）^ 2 / n_2。 我们的数字也是如下。
+    X'_ {oc} = 132.86s_ {oc} = 15.34和n_ {oc} = 8。 X'_ {c} = 127.44 s_ {c} = 18.23，n_ {c} = 21。
+  CorrectAnswer: 132.86-127.44 +c(-1,1)*qt(.975,mydf)*sqrt(15.34^2/8 + 18.23^2/21)
+  AnswerTests:  omnitest(correctExpr='132.86-127.44 +c(-1,1)*qt(.975,mydf)*sqrt(15.34^2/8 + 18.23^2/21)')
+  Hint: 在命令提示符下键入132.86-127.44 + c（-1,1）* qt（.975，mydf）* sqrt（15.34 ^ 2/8 + 18.23 ^ 2/21）。
+
+- Class: text
+  Output: 如果将var.equal设置为FALSE，则调用t.test，则R会为您计算自由度。 你不必记住这个公式。
+  
+- Class: mult_question
+  Output: 确定将这次练习的结果提交吗?
+  CorrectAnswer: NULL
+  AnswerChoices: Yes;No
+  AnswerTests: post_on_demand()
+  Hint: ""
+  
+- Class: text
+  Output: 恭喜！ 你已经完成了这个关于所有事情的非常重要的课程 - 统计，分布，间隔。 希望你不要太离谱！

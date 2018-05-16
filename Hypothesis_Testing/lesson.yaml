@@ -1,0 +1,354 @@
+- Class: meta
+  Course: Statistical_Inference
+  Lesson: Hypothesis_Testing
+  Author: your name goes here
+  Type: Standard
+  Organization: your organization's name goes here
+  Version: 2.4.3
+
+- Class: text
+  Output: 在本课中,我们将讨论关于使用观测数据做出关于人口决策的假设检验。
+
+- Class: text
+  Output: 假设检验中一个重要的概念是NULL假设(零假设)，通常表示为H_0。 是测试替代假设的基线，替代假设通常由H_a表示。 计算统计量
+    拒绝H_0以支持研究或替代假设。
+
+- Class: text
+  Output: 呼吸紊乱指数（RDI）超过30次事件/小时被认为是严重睡眠呼吸紊乱（SDB）的证据。 假设在100名睡眠门诊有SDB危险因素的超重受试者样本中，平均RDI（X'）为32次/小时，标准差为10次/小时。
+
+- Class: text
+  Output: 我们要测试mu = 30的零假设H_0。我们的替代假设H_a是mu> 30。 这里mu代表了假设的总体平均RDI。
+ 
+- Class: text
+  Output: 所以我们有两个相互竞争的假设H_0和H_a，我们必须选择一个假设（使用统计量验证）。 这意味着我们有四个可能的结果，
+    它们取决于真相以及我们根据我们的数据接受哪个假设。 其中两个结果是正确的，两个是错误的。 
+
+- Class: mult_question
+  Output: 下列哪个结果是正确的？
+  AnswerChoices: H_0 is TRUE and we reject it; H_a is TRUE and we accept it; H_0 is FALSE and we accept it; H_a is FALSE and we accept it
+  CorrectAnswer: H_a is TRUE and we accept it
+  AnswerTests: omnitest(correctVal='H_a is TRUE and we accept it')
+  Hint: 接受真理总是更好。
+
+- Class: mult_question
+  Output: 以下哪个结果是错误的？
+  AnswerChoices: H_0 is TRUE and we reject it; H_a is TRUE and we accept it; H_0 is FALSE and we reject it; H_a is FALSE and we reject it
+  CorrectAnswer: H_0 is TRUE and we reject it
+  AnswerTests: omnitest(correctVal='H_0 is TRUE and we reject it')
+  Hint: 拒绝真相总是一个错误。
+
+- Class: text
+  Output: 所以我们应该接受一个真正的假设或拒绝一个错误的假设。
+
+- Class: text
+  Output: 我们也可能发生错误 - 拒绝一个真正的假设或接受一个错误的假设。 
+
+- Class: text
+  Output: 我们区分这两个错误。 类型I错误拒绝真实零假设H_0和类型II错误接受假的零假设H_0。
+
+- Class: mult_question
+  Output: 我们能否确定我们是绝对正确的？ 
+  AnswerChoices: Yes; No;  Always; Let's not get into philosophy now
+  CorrectAnswer: No
+  AnswerTests: omnitest(correctVal='No')
+  Hint: 关键词是“绝对的”。 我们正在根据可能的数据作出决定，这些数据可能是也可能不是完整或代表性的或准确的。 谁知道？
+
+- Class: text
+  Output: 由于在涉及人口的问题上存在某些不确定因素，因此我们处理概率。 在我们的假设检验中，我们将设置错误的概率很小。 现在我们将关注I型错误，拒绝一个正确的假设。
+
+- Class: text
+  Output: 使这两种错误的概率是相关的。 如果降低发生I型错误的可能性（拒绝对的零假设），则会增加发生II型错误的可能性（接受错误的备择），反之亦然。
+
+- Class: mult_question
+  Output: 我们考虑一个法庭，零假设是被告是无辜的。 如果一个无辜的人被定罪，这是什么类型的错误？
+  AnswerChoices: Type I; Type II
+  CorrectAnswer: Type I
+  AnswerTests: omnitest(correctVal='Type I')
+  Hint: 你拒绝一个真正的零假设。 回想一下，II型错误接受一个虚假的假设。
+
+- Class: mult_question
+  Output: 你可以通过拒绝H_0来把无辜的人送进监狱。 假设一个有罪的人没有被定罪。 这是什么类型的错误？
+  AnswerChoices: Type I; Type II
+  CorrectAnswer: Type II
+  AnswerTests: omnitest(correctVal='Type II')
+  Hint: 你接受一个虚假的假设（无罪）。 回想一下，类型I错误拒绝了事实。
+
+- Class: text
+  Output: 回到之前关于睡眠的例子。如果我们的样本平均值X'大于一些常数C，一个合理的策略会拒绝零假设。我们选择C，这样I类错误的概率α就是.05（或其他一些常用的常量）。 许多科学论文使用.05作为拒绝的标准级别。
+
+- Class: text
+  Output: 这意味着，类型I错误率α是在实际上是正确的时候拒绝零假设的概率。 我们不希望alpha太低，因为那样我们就不会拒绝零假设，即使它是假的。
+
+- Class: cmd_question
+  Output: 回想一下，样本均值的标准误差由公式s / sqrt（n）给出。 回想一下在我们的睡眠例子中，我们有一个100人的样本，
+    我们的平均RDI(X')是32个事件/小时，标准偏差为10次事件/小时。 在这个例子中，平均值的标准差是多少？
+  CorrectAnswer: 1
+  AnswerTests: equiv_val(1)
+  Hint: 除以sqrt(n)。
+
+- Class: text
+  Output: 在H_0下，X'正态分布，平均μ= 30，方差为1.（我们将方差估计为标准误差的平方，在这种情况下为1）。我们要选择常数C， 如果H_0为5％，则X大于C. 即，P（X> C | H_0）为5％。 听起来有点熟？
+
+- Class: figure
+  Output: 这里有一个图形来展示我们的意思。 阴影部分代表曲线下面积的5％，其中的X值是X> C为5％的概率。
+  Figure: conf_5pct.R
+  FigureType: new
+
+- Class: mult_question
+  Output: 阴影部分代表该正常密度曲线下面积的5％。 哪个表达式代表区域被覆盖的最小值X，假设这是标准的正常值？
+  AnswerChoices: qnorm(.95); rnorm(.95); dnorm(.95); qt(.95,99)
+  CorrectAnswer: qnorm(.95)
+  AnswerTests: omnitest(correctVal='qnorm(.95)')
+  Hint: 阴影从第95百分位开始，并且该阴影区域的最小值X代表第95个分位数。
+
+- Class: text
+  Output: 标准正态分布的第95个百分位的分位点值为1.645，所以在我们的例子中，我们必须将C设定为比我们的假设平均30，即C = 30 + 1.645 * 1 = 31.645 （回想一下，方差和标准差等于1）。
+
+- Class: text
+  Output: 这意味着如果我们的观察（样本）的平均值X'> = C，那么从这个N（30,1）分布中随机抽取的概率只有5％
+
+- Class: mult_question
+  Output: 回想一下，我们观察到的平均值X'是32，大于C = 31.645，所以它落在这个5％的区域。 我们用H_0做什么？
+  AnswerChoices: reject it; fail to reject it; give it another chance
+  CorrectAnswer: reject it
+  AnswerTests: omnitest(correctVal='reject it')
+  Hint: 观察到的样本平均值X'落在拒绝区域，所以我们抛弃了H_0。
+
+- Class: text
+  Output: 因此，当样本平均值X'> = 31.645时，拒绝H_0的规则具有如下性质：给定本例的模型，假设平均mu = 30，方差= 1时，拒绝H_0为真的概率为5％。
+
+- Class: text
+  Output: 我们可以简单地计算一个Z分数，即样本均值与假设均值的标准偏差的数量，而不是计算常数C作为接受或拒绝零假设的切点。 然后我们可以将它与alpha确定的分位数进行比较。
+
+- Class: text
+  Output: 我们如何做到这一点？ 计算两个平均值（32-30）之间的距离，除以均值的标准误差，即（s / sqrt（n））。 
+
+- Class: cmd_question
+  Output: 回想Z分数是X'-mu除以平均值的标准误差。 在这个例子中，X'= 32，μ= 30，标准误差是10 / sqrt（100）= 1。
+  CorrectAnswer: 2
+  AnswerTests: equiv_val(2)
+  Hint: 2除以1。
+
+- Class: mult_question
+  Output: Z分数是2.分位数是1.645，因此2> 1.645。 我们用H_0做什么？
+  AnswerChoices: reject it; fail to reject it; give it another chance
+  CorrectAnswer: reject it
+  AnswerTests: omnitest(correctVal='reject it')
+  Hint: 由于Z分数超过了临界的分位数，所以观察到的样本均值X'落在拒绝区域，所以我们抛出H_0。
+
+- Class: text
+  Output:  拒绝的一般规则是如果sqrt（n）*（X'-mu）/ s> Z_ {1-alpha}。
+
+- Class: text
+  Output: 我们的检验统计量是（X'-mu）/（s / sqrt（n）），这是标准正态分布。
+
+- Class: mult_question
+  Output: 这意味着我们的统计检验有什么意思和标准差？
+  AnswerChoices: 0 and 1; 1 and 0; 0 and 0; 1 and 1
+  CorrectAnswer: 0 and 1
+  AnswerTests: omnitest(correctVal='0 and 1')
+  Hint: 均值为0，标准偏差为1。
+
+- Class: text
+  Output: 来看我们的另一个例子。我们的假设是mu=0在显著性水平alpha = 0.05的值(这是我们拒绝H_0的概率，如果它是真的)。我们可以有几种不同的假设。
+
+- Class: text
+  Output: 假设我们的第一个选择H_a是mu <0。 当我们观察的样本均值显着小于mu_0时，我们将拒绝H_0（并接受H_a）。 也就是说，
+    我们的检验统计量（X'-mu）/（s / sqrt（n））小于Z_alpha。 具体来说，它是样本均值在mu_0的左侧超过1.64个标准差。
+
+- Class: figure
+  Output: 这里有一个图形来展示我们的意思。 阴影部分代表曲线下面积的5％，那些比平均值小至少1.64个标准偏差的X值。 
+    这个概率是5％。 这意味着如果我们的样本均值落在这个区域，我们会拒绝一个真实的零假设mu = mu_0，概率为5％。
+  Figure: conf_5pct_left.R
+  FigureType: new
+
+- Class: mult_question
+  Output: 我们已经覆盖了mu> mu_0的替代假设H_a，但让我们来回顾一下。 当我们的样本意义是什么时，我们会拒绝H_0（并接受H_a）？
+  AnswerChoices: significantly greater than mu_0; significantly less than mu_0; equal to mu_0; huh?
+  CorrectAnswer: significantly greater than mu_0
+  AnswerTests: omnitest(correctVal='significantly greater than mu_0')
+  Hint: 如果我们接受H_a，那么真实的mu大于H_0值mu_0，我们希望我们的样本均值大于mu_0.
+
+- Class: mult_question
+  Output: 这意味着我们的测试统计量（X'-mu）/（s / sqrt（n））是什么？
+  AnswerChoices: at least 1.64 std dev greater than mu_0; at least 1.64 std dev less than mu_0; equal to mu_0; huh?
+  CorrectAnswer: at least 1.64 std dev greater than mu_0
+  AnswerTests: omnitest(correctVal='at least 1.64 std dev greater than mu_0')
+  Hint: 如果我们接受H_a，那么真实的mu大于H_0值mu_0，我们希望我们的检验统计量大于平均值的1.64个标准差。
+
+- Class: figure
+  Output: 这里再次展示了这一点。 阴影部分代表曲线下面积的5％，其中的X值至少比平均值大1.64个标准差。 这个概率是5％。 
+    这意味着如果我们观察到的平均值落在这个区域，我们会拒绝一个真实的零假设，mu = mu_0，概率为5％。
+  Figure: conf_5pct.R
+  FigureType: new
+
+- Class: text
+  Output: 最后，我们考虑一个替代假设H_a，即mu不等于mu_0，这是由零假设H_0 mu=mu_0的替代假设。 
+    当我们的样本均值明显不同于mu_0时，我们将拒绝H_0（并接受H_a），也就是说，要么小于或大于mu_0。
+
+- Class: text
+  Output: 因为我们想要坚持5％的拒绝率，所以我们把它分成两半，并考虑两个尾部的值，即0.025和0.975的百分位数。 这意味着我们的检验统计量（X'-mu）/（s / sqrt（n））小于.025，Z_（alpha / 2）或大于.975，Z_（1-alpha / 2）。
+
+- Class: figure
+  Output: 如前所述，阴影部分表示构成拒绝区域的面积的5％。 这一次，它是由两个相等的部分组成，每个部分包含曲线下面积的2.5％。 阴影部分的X值是距离假设均值mu至少1.96标准差的值。
+  Figure: conf_5pct_both.R
+  FigureType: new
+
+- Class: text
+  Output: 注意，如果我们拒绝H_0，那么它是FALSE（因此我们的模型是错误的，因此我们拒绝它是正确的），或者H_0是TRUE，并且我们犯了一个错误（类型I）。 这个概率是5％。
+
+- Class: text
+  Output: 由于我们的测试是基于alpha，I类错误的概率，我们说我们“拒绝H_0”而不是“接受H_0”。 如果我们不能拒绝H_0，那么H_0可能是真的，或者我们可能没有足够的数据来拒绝它。
+
+- Class: text
+  Output: 我们还没有确定类型II错误的概率（当它是假的时候接受H_0），我们称之为β。 术语POWER指数量1-beta，它表示当H_0为假时拒绝H_0的概率。 这用于确定实验中适当的样本大小。
+
+- Class: mult_question
+  Output: 你认为我们拒绝H_0的值的区域是什么？
+  AnswerChoices: the rejection region; the shady tails; the abnormal region; the region of interest; the waggy tails
+  CorrectAnswer: the rejection region
+  AnswerTests: omnitest(correctVal='the rejection region')
+  Hint: 哪个选项中有“拒绝”这个词？
+ 
+- Class: text
+  Output: 请注意，到目前为止，我们一直在讨论正态分布，并且隐含地依赖于中心极限定理（CLT）。
+
+- Class: mult_question
+  Output: 记住CLT。 对于一个正态分布，样本量必须是多少？
+  AnswerChoices: large; small; abnormal; normal; 
+  CorrectAnswer: large
+  AnswerTests: omnitest(correctVal='large')
+  Hint: 随着样本量变大，分布看起来很正常。
+
+- Class: text
+  Output: 不用担心。 如果我们没有大样本量，我们可以使用方便地使用上面我们使用的相同检验统计量（X'-mu）/（s / sqrt（n））的
+    t分布。 这意味着，我们刚刚经历的所有例子都将完全相同，除了使用正态分位数，我们将使用t个分位数和n-1个自由度。
+
+- Class: text
+  Output: 我们说t分布非常方便，不是吗？  
+
+- Class: text
+  Output: 让我们回到我们的睡眠障碍的例子，假设我们的样本量= 16（而不是100）。 如前所述，（样本平均值）X'= 32，（标准差）s = 10。 H_0表示真实平均值μ= 30，H_a表示mu> 30。 对于这个较小的样本量我们使用t检验，但是我们的检验统计量也是以相同的方式计算的，即（X'-mu）/（s / sqrt（n）） 
+
+- Class: cmd_question
+  Output: 样本量为16的检验统计量(X'-mu) /（s / sqrt（n））的值是多少？
+  CorrectAnswer: .8
+  AnswerTests: equiv_val(.8)
+  Hint: 在命令提示符处键入（32-30）/（10/4）。
+
+- Class: cmd_question
+  Output: 我们有16个样本量有多少个自由度？
+  CorrectAnswer: 15
+  AnswerTests: equiv_val(15)
+  Hint: 回想一下，自由度的数量比样本大小少一个。 这里的样本大小是16。
+
+- Class: cmd_question
+  Output: 在H_0下，检验统计量大于t分布的第95个百分点的概率是5％。 使用R函数qt和参数.95以及正确的自由度来查找分位数。
+  CorrectAnswer: qt(.95,15)
+  AnswerTests: omnitest(correctExpr='qt(.95,15)')
+  Hint: 在命令提示符下键入qt(.95,15).
+
+- Class: text
+  Output: 因此，检验统计量（.8）小于1.75，t分布的第95个百分点（15 df）。 这意味着我们的样本均值（32）不在排斥范围内，因为H_a是mu> 30。 
+
+- Class: mult_question
+  Output: 这意味着什么?
+  AnswerChoices: we reject H_0; we fail to reject H_0; we reject H_a; 
+  CorrectAnswer: we fail to reject H_0
+  AnswerTests: omnitest(correctVal='we fail to reject H_0')
+  Hint: 测试统计超出了拒绝的范围，所以我们不能拒绝H_0。
+
+- Class: text
+  Output: 现在让我们考虑一个双侧检验。 假设实际上样本均值太大或太小，我们会拒绝零假设。 也就是说，我们要测试mu不等于30的替代H_a。如果测试统计量0.8太大或太小，我们将拒绝。
+
+- Class: text
+  Output: 正如我们之前讨论过的，我们希望在原假设为真的情况下拒绝的概率是5％，在上尾部2.5％，下尾部2.5％。 因此，如果我们的检验统计量大于qt（.975,15）或小于qt（.025,15），我们拒绝。
+
+- Class: mult_question
+  Output: 你是否期望qt（0.975,15）大于或小于qt（0.95,15）？
+  AnswerChoices: bigger; smaller
+  CorrectAnswer: bigger
+  AnswerTests: omnitest(correctVal='bigger')
+  Hint: 你正在寻找曲线下面的一个较小的区域，这意味着分位数会在右边的尾部更远，所以它应该更大。
+
+- Class: mult_question
+  Output: 由于检验统计量小于qt（.95,15），它会大于还是小于qt（.975,15）？
+  AnswerChoices: bigger; smaller
+  CorrectAnswer: smaller
+  AnswerTests: omnitest(correctVal='smaller')
+  Hint: 如果A <B和B <C，那么A <C，对吗？
+
+- Class: mult_question
+  Output: 现在为左尾，qt（.025,15）。 我们可以说什么呢?
+  AnswerChoices: it is less than 0; it is greater than 0; it is bigger than qt(.975,15); we don't know anything about it
+  CorrectAnswer: it is less than 0
+  AnswerTests: omnitest(correctVal='it is less than 0')
+  Hint: 由于分布的对称性，任何小于.5的百分位数的分位数将小于0。
+
+- Class: text
+  Output: 这里的底线是如果你不拒绝单方面的测试，你知道你将不会拒绝双方。
+
+- Class: mult_question
+  Output: 所以测试统计.8测试的双方都失败了。 那意味着我们?
+  AnswerChoices: fail to reject H_0; reject H_0; reject H_a; huh?
+  CorrectAnswer: fail to reject H_0
+  AnswerTests: omnitest(correctVal='fail to reject H_0')
+  Hint: 再次，测试统计接近假设的意思，所以我们不拒绝它。
+
+- Class: text
+  Output: 现在我们通常不需要自己做所有这些计算，因为R提供了函数t.test！ 为了证明这一点，我们提供了一个csv文件，
+    其中包含John Verzani的UsingR网站（http://wiener.math.csi.cuny.edu/UsingR/）的father_son高度数据，
+    并将其读入数据结构fs中。 我们将对这个配对数据做一个t检验，看父亲和儿子是否有相似的高度（我们的零假设）。
+
+- Class: cmd_question
+  Output: 现在使用R函数dim查看fs的维数。
+  CorrectAnswer: dim(fs)
+  AnswerTests: omnitest(correctExpr='dim(fs)')
+  Hint: 在命令提示符下输入dim（fs）。
+
+- Class: cmd_question
+  Output: 所以fs有1078行和2列，包含着父亲和儿子的高度。 显然有1078这样的对。 我们可以用两种方式之一对这个数据运行t.test。 
+    首先，我们可以用一个参数来运行它，高度的差别就是fs $ sheight-fs $ fheight。 或者我们可以用三个参数来运行它，两个高度加上成对参数pair设置为TRUE。 现在使用任何你喜欢的方式运行t.test。
+  CorrectAnswer: t.test(fs$sheight-fs$fheight)
+  AnswerTests: ANY_of_exprs('t.test(fs$sheight-fs$fheight)','t.test(fs$fheight-fs$sheight)','t.test(fs$sheight,fs$fheight,paired=TRUE)','t.test(fs$fheight, fs$sheight,paired=TRUE)')
+  Hint: 在命令提示符下键入t.test（fs $ sheight-fs $ fheight）。
+
+- Class: mult_question
+  Output: 测试统计是什么？
+  AnswerChoices: 2.2e-16; 11.7885; .8310296; 0.9969728 
+  CorrectAnswer: 11.7885
+  AnswerTests: omnitest(correctVal='11.7885')
+  Hint: 我们一直在使用t统计量和t检验。
+
+- Class: text
+  Output: 因此，检验统计量是11.79，这是相当大的，所以我们拒绝零假设，即差异的真实平均值为0或者平均值的真实差异为0。
+
+- Class: mult_question
+  Output: 假设检验统计告诉我们什么？
+  AnswerChoices: the number of estimated std errors between the sample and hypothesized means; the sample mean; the true mean; the true variance 
+  CorrectAnswer: the number of estimated std errors between the sample and hypothesized means
+  AnswerTests: omnitest(correctVal='the number of estimated std errors between the sample and hypothesized means')
+  Hint: 检验统计量告诉我们样本平均值与假设值有多少标准偏差。 记住t =（X'-mu）/（s / sqrt（n））
+
+- Class: cmd_question
+  Output: 我们可以通过将t统计量（11.7885）乘以数据的标准差除以样本大小的平方根来进行测试。 具体运行11.7885 * sd（fs $ sheight-fs $ fheight）/ sqrt（1078）。
+  CorrectAnswer: 11.7885 * sd(fs$sheight-fs$fheight)/sqrt(1078)
+  AnswerTests: omnitest(correctExpr='11.7885 * sd(fs$sheight-fs$fheight)/sqrt(1078)')
+  Hint: 在命令提示符下键入11.7885 * sd（fs $ sheight-fs $ fheight）/ sqrt（1078）。
+
+- Class: text
+  Output: 注意t.test返回的95％置信区间0.8310296 1.1629160。 它不包含假设的总体均值0，所以我们非常自信，我们可以安全地拒绝这个假设。 这告诉我们，我们的假设是错误的。
+
+- Class: text
+  Output: 您可能已经注意到我们在上一课中研究的置信区间和这些假设检验之间的强烈相似性。 那是因为它们是相同的！
+  
+- Class: mult_question
+  Output: 确定将这次练习的结果提交吗?
+  CorrectAnswer: NULL
+  AnswerChoices: Yes;No
+  AnswerTests: post_on_demand()
+  Hint: ""
+  
+- Class: text
+  Output: 恭喜你完成了这一课。
+

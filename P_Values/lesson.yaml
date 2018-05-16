@@ -1,0 +1,206 @@
+- Class: meta
+  Course: C10_Statistics_01
+  Lesson: P_Values
+  Author: mzl
+  Type: Standard
+  Organization: pkuss
+  Version: 2.4.3
+
+- Class: text
+  Output: 在本课中，顾名思义，我们将讨论p值。 它们是统计显着性最常用的度量。
+
+- Class: text
+  Output: 但是，因为它很受欢迎，所以它们被使用了很多，而且经常被误用或误解。 在这练习中，我们将重点介绍如何生成p值并正确理解p值。
+
+- Class: text
+  Output: 诱发p值的问题是这样的。 我们对于我们的数据（例如平均值mean）有一些零假设，我们从数据中获得的样本值是怎样的不寻常或极端呢？ 
+    我们的检验统计是否与我们的假设一致？ 因此，我们必须采取三个步骤来回答这些类型的问题。
+
+- Class: mult_question
+  Output: 你觉得第一步是什么？
+  AnswerChoices: Create a null hypothesis; Calculate a test statistic from the data;  Compare the test statistic to a Z or t quantile; Consult your crystal ball
+  CorrectAnswer: Create a null hypothesis
+  AnswerTests: omnitest(correctVal='Create a null hypothesis')
+  Hint: 你总是必须从零假设开始。
+
+- Class: text
+  Output: 所以我们必须从一个零假设开始，这个假零假设是对某个数据汇总（一个统计量）分布的一个合理推测。 零假设H_0是一个基准，基于零假设我们将使用实际观察到的数据
+    来衡量一个备选假设。
+
+- Class: mult_question
+  Output: 所以你提出一个零假设。 下一步是什么？
+  AnswerChoices:  Calculate a test statistic from the given data;  Compare the test statistic to a Z or t score; Go back to the crystal ball; Reject H_0
+  CorrectAnswer: Calculate a test statistic from the given data
+  AnswerTests: omnitest(correctVal='Calculate a test statistic from the given data')
+  Hint: 你需要一些东西来比较H_0中提出的值。
+
+- Class: mult_question
+  Output: 现在你有一个建议的统计数据（从你的推理假设中）和一个从你收集的数据中计算出来的检验统计量。 最后一步是什么？
+  AnswerChoices:  Calculate a test statistic from the given data;  Compare the test statistic to the hypothetical distribution; Go back to the crystal ball; Reject H_0
+  CorrectAnswer: Compare the test statistic to the hypothetical distribution
+  AnswerTests: omnitest(correctVal='Compare the test statistic to the hypothetical distribution')
+  Hint: 你必须将你的计算值与一个假设进行比较。
+
+- Class: text
+  Output: 你的比较告诉你测试值是多么"极端"地朝向替代假设。 p值是在假设下获得证据的概率，或者比你的检验统计量（从你观察到的数据中获得的）在替代假设的方向上更极端。
+
+- Class: text 
+  Output: 所以如果p值（得到你测试统计量值的概率）很小，那么发生两件事情之一。 要么H_0是真，你观察到罕见的事件（在这个不寻常的测试统计量下）或H_0是错误的。 
+    我们来看一个例子。
+
+- Class: text 
+  Output: 假设你得到一个15个自由度的t统计量值为2.5来检验H_0（mu = mu_0）与另一个H_a（mu> mu_0）。 我们希望找到得到2.5统计量的概率。
+
+- Class: cmd_question
+  Output: R可以帮助我们！ 我们可以使用R函数pt，t分布的分布函数。 此函数返回两个概率之一，即X> q（如果lower.tail为FALSE）或X <= q（如果lower.tail为TRUE）的概率，其中q是分位数参数。 因为H_a表示mu> mu_0，这里我们将设置q = 2.5，df = 15，lower.tail = FALSE。 我们必须衡量H_a方向的极端情况。 现在运行这个。
+  CorrectAnswer: pt(2.5, 15, lower.tail=FALSE)
+  AnswerTests: omnitest(correctExpr='pt(2.5, 15, lower.tail=FALSE)')
+  Hint: 在命令提示符处键入pt（2.5，15，lower.tail = FALSE）。
+
+- Class: text 
+  Output: 这个结果告诉我们，如果H_0是真的，我们会看到这个以1％的概率看到这个结果的测试统计量，然而1%这是一个很小的概率.
+
+- Class: mult_question
+  Output: 我们应该做什么？
+  AnswerChoices:   Reject H_0; Fail to reject H_0; Consult the crystal ball
+  CorrectAnswer: Reject H_0
+  AnswerTests: omnitest(correctVal='Reject H_0')
+  Hint: 1％低于通常的5％
+
+- Class: text 
+  Output: 另一种考虑p值的方法是获得的显着水平。 这是一个奇特的说法，即p值是你拒绝零假设的最小值alpha。
+  
+- Class: cmd_question
+  Output: 为什么我们拒绝？ 找到与此测试相关的分位数，这是开始的地方。 在第95百分位使用qnorm。
+  CorrectAnswer: qnorm(.95)
+  AnswerTests: omnitest(correctExpr='qnorm(.95)')
+  Hint: 在命令提示符下键入qnorm（.95）。
+
+- Class: figure 
+  Output: 我们拒绝H_0是因为我们的数据（实际上是测试统计量）支持H_a。 测试统计量2（由垂直的蓝线表示）落在该图的阴影部分，因为它超出了分位数。 如您所知，阴影部分代表曲线下面积的5％。
+  Figure: conf_5pct.R
+  FigureType: new
+
+- Class: cmd_question
+  Output: 现在尝试第99个百分点，看看我们是否还会拒绝H_0。
+  CorrectAnswer: qnorm(.99)
+  AnswerTests: omnitest(correctExpr='qnorm(.99)')
+  Hint: 在命令提示符下键入qnorm（.99）。
+
+- Class: mult_question
+  Output: 如果alpha是.01，我们会拒绝H_0吗？
+  AnswerChoices: Yes; No
+  CorrectAnswer: No
+  AnswerTests: omnitest(correctVal='No')
+  Hint: 现在分位数2.33超过了检验统计量2。
+
+- Class: figure 
+  Output: 再次，一张图片胜过千言万语，对吧？ 检验统计量2的垂直线不在排斥范围内。
+  Figure: conf_1pct.R
+  FigureType: new
+
+- Class: cmd_question
+  Output: 所以我们的数据（测试统计量）告诉我们达到的显著水平是什么。 我们使用R函数pnorm给我们这个数字。 使用默认值，特别是lower.tail = TRUE，这给了我们从分布中随机抽取少于或等于参数的概率。 现在用测试统计值进行测试2.对所有其他参数使用默认值。
+  CorrectAnswer: pnorm(2)
+  AnswerTests: omnitest(correctExpr='pnorm(2)')
+  Hint: 在命令提示符下键入pnorm（2）.
+
+- Class: text
+  Output: 正如我们所想的，在0.95（我们拒绝的地方）和.99（我们拒绝的地方）之间的某个地方。 这是令人放心的。
+
+- Class: cmd_question
+  Output: 现在让我们找到与这个例子相关的p值。 和以前一样，我们将使用pnorm。 但是这次我们将lower.tail参数设置为FALSE。 这给了我们X超出检验统计量的概率，即检验统计量右边的曲线下面积。 现在用测试统计值2来尝试。
+  CorrectAnswer: pnorm(2,lower.tail=FALSE)
+  AnswerTests: omnitest(correctExpr='pnorm(2,lower.tail=FALSE)')
+  Hint: 在命令提示符处键入pnorm（2，lower.tail = FALSE）。
+
+- Class: text
+  Output: 这告诉我们获得性显著性水平大约是2％.
+
+- Class: text
+  Output: 通过报告一个p值，而不是一个alpha级别以及是否拒绝H_0，工作审查者可以在他们选择的任何alpha级别进行假设检验。 一般的规则是，如果p值小于指定的alpha值，则拒绝原假设，如果alpha更大，则不拒绝原假设。
+ 
+- Class: text
+  Output: 对于双边假设检验，你必须加倍两个单边p值中较小的一个。 我们稍后会看到一个例子。 大多数软件都采用双边假设检验，并自动将p值加倍。
+ 
+- Class: text
+  Output: 现在进行双边假设检验。 我们看一个例子，有8个孩子的家庭，其中7个是女孩。 你想测试H_0，p = 0.5，其中p是一个女孩的概率（就像一个均匀硬币的翻转翻转）。 H_a是p不等于.5。 它大于或小于0.5。
+
+- Class: cmd_question
+  Output: 这是一个双边假设检验。 首先我们找到至少有i个女孩的概率，i从0到8。我们有这些概率向量mybin。 现在看看。
+  CorrectAnswer: mybin
+  AnswerTests: omnitest(correctExpr='mybin')
+  Hint: 在命令提示符下键入mybin。
+
+- Class: cmd_question
+  Output: 倒数第二个值表明，假设性别是等可能的（p = 0.5），至少有7个女孩（8个孩子中）的概率是0.035。 你可以用R函数pbinom来验证它，参数为6，size = 8，prob = 0.5，lower.tail = FALSE。 （这最后得出X> 6的概率。）现在试试这个。
+  CorrectAnswer: pbinom(6,size=8,prob=.5,lower.tail=FALSE)
+  AnswerTests: omnitest(correctExpr='pbinom(6,size=8,prob=.5,lower.tail=FALSE)')
+  Hint: 在命令提示符处键入pbinom（6，size = 8，prob = .5，lower.tail = FALSE）。
+
+- Class: mult_question
+  Output: 我们看到约0.03的概率。 如果alpha = 0.05，我们应该拒绝还是拒绝H_0？
+  AnswerChoices: Reject; Fail to reject
+  CorrectAnswer: Reject
+  AnswerTests: omnitest(correctVal='Reject')
+  Hint: 0.03的概率低于.05的基准。
+
+- Class: mult_question
+  Output: 我们看到约0.03的概率。 如果alpha = 0.04，我们是否应拒绝或拒绝H_0？
+  AnswerChoices: Reject; Fail to reject
+  CorrectAnswer: Reject
+  AnswerTests: omnitest(correctVal='Reject')
+  Hint: 概率.03小于.04。
+
+- Class: mult_question
+  Output: 我们看到约0.03的概率。 如果alpha = 0.03，我们应拒绝还是拒绝H_0？
+  AnswerChoices: Reject; Fail to reject
+  CorrectAnswer: Fail to reject
+  AnswerTests: omnitest(correctVal='Fail to reject')
+  Hint: p值约为0.035，大于α= 0.03。
+
+- Class: cmd_question
+  Output: 对于测试的另一方面，我们需要X <= 7的概率，再次以概率为0.5的大小为8的样本中抽取出来。 同样，我们使用pbinom，这次的参数是7，而lower.tail = TRUE。 现在试试这个。
+  CorrectAnswer: pbinom(7,size=8,prob=.5,lower.tail=TRUE)
+  AnswerTests: omnitest(correctExpr='pbinom(7,size=8,prob=.5,lower.tail=TRUE)')
+  Hint: 在命令提示符处键入pbinom（7，size = 8，prob = .5，lower.tail = TRUE）。
+
+- Class: text
+  Output: 所以在8个孩子中，最多有7个女孩的概率很可能是（996）。双边假设检验的p值是2 *两个单边值中较小的一个。 在这种情况下，较低的值是.035，所以2 * .035是这个双边假设检验的p值。 
+
+- Class: text
+  Output: 现在是使用泊松分布的最后一个例子。 请记住，这是离散的，它涉及计数或计数率。 
+
+- Class: text
+  Output: 假设医院感染率为每100人/天有10次感染风险。 这是一个0.1的速度。 假设以0.05的感染率为基准。 这是我们的alpha级别，认识到它？ 有了这个模型，观察到的比率（.1）是否可能大于基准值0.05，是否意味着问题？ 
+
+- Class: text
+  Output: 换句话说，H_0表示lambda = 0.05，lambda_0 * 100 = 5，H_a表示lambda> 0.05。 H_0是真的，我们观察到的速率（0.1）只是一个小概率事件，或者我们应该拒绝H_0？
+
+- Class: cmd_question
+  Output: 如前所述，R具有方便的函数ppois，它返回泊松分布的概率。 我们希望至少有9个感染的概率使用lambda值为5，lower.tail = FALSE。 当我们使用pbinom时，我们必须用9作为参数，因为我们正在寻找一个大于参数的值的概率。 现在试试这个。
+  CorrectAnswer: ppois(9,5,lower.tail=FALSE)
+  AnswerTests: omnitest(correctExpr='ppois(9,5,lower.tail=FALSE)')
+  Hint: 在命令提示符处键入ppois（9,5，lower.tail = FALSE）。
+
+- Class: mult_question
+  Output: 我们看到约0.03的概率。 我们应拒绝还是拒绝H_0？ （请记住阴影区域的有用图片，较小的区域意味着较小的概率，反之亦然。）
+  AnswerChoices: Reject; Fail to reject
+  CorrectAnswer: Reject
+  AnswerTests: omnitest(correctVal='Reject')
+  Hint: 记住地区的图片。 .03的概率低于.05的基准。
+
+- Class: text
+  Output: 所以我们拒绝由H_0假设的感染率，因为数据有利于H_a，表明这个比率更高。
+  
+- Class: mult_question
+  Output: 确定将这次练习的结果提交吗?
+  CorrectAnswer: NULL
+  AnswerChoices: Yes;No
+  AnswerTests: post_on_demand()
+  Hint: ""
+  
+- Class: text
+  Output: 恭喜！ 你完成了这一课。 我们希望你重视它。
+
+
